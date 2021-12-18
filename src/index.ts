@@ -1,19 +1,50 @@
-import { test } from './test'
-import { __PROD__, __DEV__ } from './env'
-/**
- * say hello
- *
- * @author CaoMeiYouRen
- * @date 2020-11-28
- * @export
- */
-export function hello() {
-    if (__PROD__) {
-        console.log('Hello production')
-    }
-    if (__DEV__) {
-        console.log('Hello development')
+import engine from './engine'
+import conventionalCommitTypes from 'conventional-commit-types'
+import { configLoader } from 'commitizen'
+import defaultConfig from './config'
 
-    }
+const config = configLoader.load() || {}
+const options = {
+    types: config.types || defaultConfig.type.enum || conventionalCommitTypes.types,
+    defaultType: process.env.CZ_TYPE || config.defaultType,
+    defaultScope: process.env.CZ_SCOPE || config.defaultScope,
+    defaultSubject: process.env.CZ_SUBJECT || config.defaultSubject,
+    defaultBody: process.env.CZ_BODY || config.defaultBody,
+    defaultIssues: process.env.CZ_ISSUES || config.defaultIssues,
+    disableScopeLowerCase:
+        process.env.DISABLE_SCOPE_LOWERCASE || config.disableScopeLowerCase,
+    disableSubjectLowerCase:
+        process.env.DISABLE_SUBJECT_LOWERCASE || config.disableSubjectLowerCase,
+    maxHeaderWidth:
+        process.env.CZ_MAX_HEADER_WIDTH &&
+        parseInt(process.env.CZ_MAX_HEADER_WIDTH) ||
+        config.maxHeaderWidth ||
+        100,
+    maxLineWidth:
+        process.env.CZ_MAX_LINE_WIDTH &&
+        parseInt(process.env.CZ_MAX_LINE_WIDTH) ||
+        config.maxLineWidth ||
+        100,
 }
-export { test }
+
+try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const commitlintLoad = require('@commitlint/load')
+    commitlintLoad().then((clConfig) => {
+        if (clConfig.rules) {
+            const maxHeaderLengthRule = clConfig.rules['header-max-length']
+            if (
+                typeof maxHeaderLengthRule === 'object' &&
+                maxHeaderLengthRule.length >= 3 &&
+                !process.env.CZ_MAX_HEADER_WIDTH &&
+                !config.maxHeaderWidth
+            ) {
+                options.maxHeaderWidth = maxHeaderLengthRule[2]
+            }
+        }
+    })
+} catch (error) {
+    //
+}
+
+module.exports = engine(options)
