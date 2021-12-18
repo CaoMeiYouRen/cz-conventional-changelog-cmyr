@@ -39,13 +39,21 @@
 ## 安装
 
 ```sh
-npm install cz-conventional-changelog-cmyr
+npm install cz-conventional-changelog-cmyr -D
 ```
 
 ## 使用
 
-```sh
-npm run start
+在 `package.json ` 添加如下配置
+
+```json
+ {
+     "config": {
+         "commitizen": {
+             "path": "cz-conventional-changelog-cmyr"
+         }
+     }
+ }
 ```
 
 ## 开发
