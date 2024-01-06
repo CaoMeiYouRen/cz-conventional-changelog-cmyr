@@ -3,6 +3,21 @@ import map from 'lodash.map'
 import longest from 'longest'
 import chalk from 'chalk'
 import defaultConfig from './config'
+import { lintMarkdown, LintMdRulesConfig } from '@lint-md/core'
+
+const fix = (markdown: string, rules?: LintMdRulesConfig) => lintMarkdown(markdown, rules, true)?.fixedResult?.result
+
+function lintMd(markdown: string) {
+    const rules = {
+        'no-empty-code': 0,
+        'no-trailing-punctuation': 0,
+        'no-long-code': 0,
+        'no-empty-code-lang': 0,
+        'no-empty-inlinecode': 0,
+    } as const
+    const fixed = fix(markdown, rules)
+    return fixed
+}
 
 const filter = function (array) {
     return array.filter((x) => x)
@@ -27,7 +42,7 @@ const filterSubject = function (subject, disableSubjectLowerCase) {
     while (subject.endsWith('.')) {
         subject = subject.slice(0, subject.length - 1)
     }
-    return subject
+    return lintMd(subject)
 }
 
 // This can be any kind of SystemJS compatible module.
@@ -119,6 +134,9 @@ export default function (options) {
                     name: 'body',
                     message: defaultConfig.body.description,
                     default: options.defaultBody,
+                    filter(text) {
+                        return lintMd(text)
+                    },
                 },
                 {
                     type: 'confirm',
@@ -140,6 +158,9 @@ export default function (options) {
                             'BREAKING CHANGE 必须要填写 body!'
                         )
                     },
+                    filter(text) {
+                        return lintMd(text)
+                    },
                 },
                 {
                     type: 'input',
@@ -147,6 +168,9 @@ export default function (options) {
                     message: defaultConfig.breaking.description,
                     when(answers) {
                         return answers.isBreaking
+                    },
+                    filter(text) {
+                        return lintMd(text)
                     },
                 },
 
@@ -165,6 +189,9 @@ export default function (options) {
                         return (
                             answers.isIssueAffected && !answers.body && !answers.breakingBody
                         )
+                    },
+                    filter(text) {
+                        return lintMd(text)
                     },
                 },
                 {
@@ -192,6 +219,7 @@ export default function (options) {
                 const head = `${answers.type + scope}: ${answers.subject}`
 
                 // Wrap these lines at options.maxLineWidth characters
+                answers.body = answers.body || answers.breakingBody
                 const body = answers.body ? wrap(answers.body, wrapOptions) : false
 
                 // Apply breaking change prefix, removing it if already present

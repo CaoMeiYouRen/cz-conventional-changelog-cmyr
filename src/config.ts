@@ -89,7 +89,7 @@ const config = {
     },
     issuesBody: {
         description:
-            '如果 issues 已关闭，则提交需要一个主体。请输入对提交本身的更长描述:\n',
+            '如果 issues 已关闭，则提交需要一个 body。请输入对提交本身的更长描述:\n',
     },
     issues: {
         description: '添加问题参考 (例如 "fix #123", "re #123".):\n',
