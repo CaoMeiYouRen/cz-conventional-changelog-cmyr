@@ -1,5 +1,12 @@
 # cz-conventional-changelog-cmyr
 
+## [1.1.1](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/compare/v1.1.0...v1.1.1) (2024-06-11)
+
+
+### 🐛 Bug 修复
+
+* 更新 word-wrap 版本；迁移包管理器到 pnpm；升级 GitHub Action 版本 ([1588bb5](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/commit/1588bb5))
+
 # [1.1.0](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/compare/v1.0.0...v1.1.0) (2024-01-06)
 
 
