@@ -3,6 +3,9 @@
   <a href="https://www.npmjs.com/package/cz-conventional-changelog-cmyr" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/cz-conventional-changelog-cmyr.svg">
   </a>
+  <a href="https://www.npmjs.com/package/cz-conventional-changelog-cmyr" target="_blank">
+    <img alt="npm downloads" src="https://img.shields.io/npm/dt/cz-conventional-changelog-cmyr?label=npm%20downloads&color=yellow">
+  </a>
   <a href="https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/actions?query=workflow%3ARelease" target="_blank">
     <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/CaoMeiYouRen/cz-conventional-changelog-cmyr/release.yml?branch=master">
   </a>
@@ -44,7 +47,7 @@ npm install cz-conventional-changelog-cmyr -D
 
 ## 使用
 
-在 `package.json ` 添加如下配置
+在 `package.json` 添加如下配置
 
 ```json
  {
