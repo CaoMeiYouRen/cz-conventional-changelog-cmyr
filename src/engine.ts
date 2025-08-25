@@ -2,8 +2,8 @@ import wrap from 'word-wrap'
 import map from 'lodash.map'
 import longest from 'longest'
 import chalk from 'chalk'
-import defaultConfig from './config'
 import { lintMarkdown, LintMdRulesConfig } from '@lint-md/core'
+import defaultConfig from './config'
 
 const fix = (markdown: string, rules?: LintMdRulesConfig) => lintMarkdown(markdown, rules, true)?.fixedResult?.result
 
@@ -154,8 +154,8 @@ export default function (options) {
                     },
                     validate(breakingBody) {
                         return (
-                            breakingBody.trim().length > 0 ||
-                            'BREAKING CHANGE 必须要填写 body!'
+                            breakingBody.trim().length > 0
+                            || 'BREAKING CHANGE 必须要填写 body!'
                         )
                     },
                     filter(text) {

@@ -1,6 +1,6 @@
-import engine from './engine'
 import conventionalCommitTypes from 'conventional-commit-types'
 import { configLoader } from 'commitizen'
+import engine from './engine'
 import defaultConfig from './config'
 
 const config = configLoader.load() || {}
@@ -16,28 +16,28 @@ const options = {
     disableSubjectLowerCase:
         process.env.DISABLE_SUBJECT_LOWERCASE || config.disableSubjectLowerCase,
     maxHeaderWidth:
-        process.env.CZ_MAX_HEADER_WIDTH &&
-        parseInt(process.env.CZ_MAX_HEADER_WIDTH) ||
-        config.maxHeaderWidth ||
-        100,
+        process.env.CZ_MAX_HEADER_WIDTH
+        && parseInt(process.env.CZ_MAX_HEADER_WIDTH)
+        || config.maxHeaderWidth
+        || 100,
     maxLineWidth:
-        process.env.CZ_MAX_LINE_WIDTH &&
-        parseInt(process.env.CZ_MAX_LINE_WIDTH) ||
-        config.maxLineWidth ||
-        100,
+        process.env.CZ_MAX_LINE_WIDTH
+        && parseInt(process.env.CZ_MAX_LINE_WIDTH)
+        || config.maxLineWidth
+        || 100,
 }
 
 try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const commitlintLoad = require('@commitlint/load')
     commitlintLoad().then((clConfig) => {
         if (clConfig.rules) {
             const maxHeaderLengthRule = clConfig.rules['header-max-length']
             if (
-                typeof maxHeaderLengthRule === 'object' &&
-                maxHeaderLengthRule.length >= 3 &&
-                !process.env.CZ_MAX_HEADER_WIDTH &&
-                !config.maxHeaderWidth
+                typeof maxHeaderLengthRule === 'object'
+                && maxHeaderLengthRule.length >= 3
+                && !process.env.CZ_MAX_HEADER_WIDTH
+                && !config.maxHeaderWidth
             ) {
                 options.maxHeaderWidth = maxHeaderLengthRule[2]
             }
