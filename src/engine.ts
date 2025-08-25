@@ -46,7 +46,7 @@ const filterSubject = function (subject, disableSubjectLowerCase) {
 // This can be any kind of SystemJS compatible module.
 // We use Commonjs here, but ES6 or AMD would do just
 // fine.
-export default function (options, msgConfig) {
+export default function (options, questions) {
     const types = options.types
 
     const length = longest(Object.keys(types)).length + 1
@@ -79,14 +79,14 @@ export default function (options, msgConfig) {
                 {
                     type: 'list',
                     name: 'type',
-                    message: msgConfig.type.description,
+                    message: questions.type.description,
                     choices,
                     default: options.defaultType,
                 },
                 {
                     type: 'input',
                     name: 'scope',
-                    message: msgConfig.scope.description,
+                    message: questions.scope.description,
                     default: options.defaultScope,
                     filter(value) {
                         return options.disableScopeLowerCase
@@ -99,7 +99,7 @@ export default function (options, msgConfig) {
                     name: 'subject',
                     message(answers) {
                         return (
-                            `${msgConfig.subject.description} (最多 ${maxSummaryLength(options, answers)
+                            `${questions.subject.description} (最多 ${maxSummaryLength(options, answers)
                             } 个字符):\n`
                         )
                     },
@@ -130,7 +130,7 @@ export default function (options, msgConfig) {
                 {
                     type: 'input',
                     name: 'body',
-                    message: msgConfig.body.description,
+                    message: questions.body.description,
                     default: options.defaultBody,
                     filter(text) {
                         return lintMd(text)
@@ -139,14 +139,14 @@ export default function (options, msgConfig) {
                 {
                     type: 'confirm',
                     name: 'isBreaking',
-                    message: msgConfig.isBreaking.description,
+                    message: questions.isBreaking.description,
                     default: false,
                 },
                 {
                     type: 'input',
                     name: 'breakingBody',
                     default: '-',
-                    message: msgConfig.breakingBody.description,
+                    message: questions.breakingBody.description,
                     when(answers) {
                         return answers.isBreaking && !answers.body
                     },
@@ -163,7 +163,7 @@ export default function (options, msgConfig) {
                 {
                     type: 'input',
                     name: 'breaking',
-                    message: msgConfig.breaking.description,
+                    message: questions.breaking.description,
                     when(answers) {
                         return answers.isBreaking
                     },
@@ -175,14 +175,14 @@ export default function (options, msgConfig) {
                 {
                     type: 'confirm',
                     name: 'isIssueAffected',
-                    message: msgConfig.isIssueAffected.description,
+                    message: questions.isIssueAffected.description,
                     default: !!options.defaultIssues,
                 },
                 {
                     type: 'input',
                     name: 'issuesBody',
                     default: '-',
-                    message: msgConfig.issuesBody.description,
+                    message: questions.issuesBody.description,
                     when(answers) {
                         return (
                             answers.isIssueAffected && !answers.body && !answers.breakingBody
@@ -195,7 +195,7 @@ export default function (options, msgConfig) {
                 {
                     type: 'input',
                     name: 'issues',
-                    message: msgConfig.issues.description,
+                    message: questions.issues.description,
                     when(answers) {
                         return answers.isIssueAffected
                     },

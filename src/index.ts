@@ -4,6 +4,36 @@ import commitlintLoad from '@commitlint/load'
 import engine from './engine'
 import defaultConfig from './config'
 
+/**
+ * 深度合并配置对象
+ * @param target 目标配置对象
+ * @param source 源配置对象
+ * @returns 合并后的配置对象
+ */
+function deepMergeConfig(target: any, source: any): any {
+    if (!source || typeof source !== 'object') {
+        return target
+    }
+
+    const result = { ...target }
+
+    for (const key in source) {
+        const sourceValue = source[key]
+        if (sourceValue !== null && sourceValue !== undefined) {
+            const targetValue = target[key]
+            if (typeof sourceValue === 'object' && !Array.isArray(sourceValue) && targetValue && typeof targetValue === 'object') {
+                // 递归合并对象
+                result[key] = deepMergeConfig(targetValue, sourceValue)
+            } else {
+                // 直接覆盖原始值、数组或 null/undefined
+                result[key] = sourceValue
+            }
+        }
+    }
+
+    return result
+}
+
 const config = configLoader.load() || {}
 const options = {
     types: config.types || defaultConfig.type.enum || conventionalCommitTypes.types,
@@ -28,14 +58,20 @@ const options = {
         || 100,
 }
 
-let msgConfig = defaultConfig
+let questions = defaultConfig
 
 try {
     commitlintLoad().then((clConfig) => {
         // console.log(clConfig)
-        msgConfig = clConfig?.prompt.questions as any || defaultConfig
 
-        if (clConfig.rules) {
+        // 使用深度合并策略：defaultConfig 作为基础，clConfig.prompt.questions 作为覆盖
+        if (clConfig?.prompt?.questions) {
+            questions = deepMergeConfig(defaultConfig, clConfig.prompt.questions)
+        } else {
+            questions = defaultConfig
+        }
+        // console.log(questions)
+        if (clConfig?.rules) {
             const maxHeaderLengthRule = clConfig.rules['header-max-length']
             if (
                 typeof maxHeaderLengthRule === 'object'
@@ -51,4 +87,4 @@ try {
     //
 }
 
-export default engine(options, msgConfig)
+export default engine(options, questions)
