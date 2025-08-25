@@ -49,7 +49,7 @@ npm install cz-conventional-changelog-cmyr -D
 {
     "config": {
         "commitizen": {
-            "path": "cz-conventional-changelog-cmyr"
+            "path": "./node_modules/cz-conventional-changelog-cmyr"
         }
     }
 }
