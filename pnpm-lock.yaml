@@ -39,9 +39,6 @@ importers:
       '@types/debug':
         specifier: ^4.1.7
         version: 4.1.12
-      '@types/lodash':
-        specifier: ^4.14.178
-        version: 4.17.20
       '@types/node':
         specifier: ^24.3.0
         version: 24.3.0
@@ -72,9 +69,6 @@ importers:
       lint-staged:
         specifier: ^16.1.5
         version: 16.1.5
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
       rimraf:
         specifier: ^3.0.2
         version: 3.0.2
@@ -496,9 +490,6 @@ packages:
 
   '@types/katex@0.16.7':
     resolution: {integrity: sha512-HMwFiRujE5PjrgwHQ25+bsLJgowjGjm5Z8FVSf0N6PwgJrwxH0QxzHYDcKsTfV3wva0vzrpqMTJS2jXPr5BMEQ==}
-
-  '@types/lodash@4.17.20':
-    resolution: {integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==}
 
   '@types/mdast@3.0.15':
     resolution: {integrity: sha512-LnwD+mUEfxWMa1QpDraczIn6k0Ee3SMicuYSSzS6ZYl2gKS09EClnJYGd8Du6rfc5r/GZEk5o1mRb8TaTj03sQ==}
@@ -3753,8 +3744,6 @@ snapshots:
   '@types/json5@0.0.29': {}
 
   '@types/katex@0.16.7': {}
-
-  '@types/lodash@4.17.20': {}
 
   '@types/mdast@3.0.15':
     dependencies:
