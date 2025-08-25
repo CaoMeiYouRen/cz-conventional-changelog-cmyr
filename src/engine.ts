@@ -218,15 +218,37 @@ export default function (options) {
                 // Hard limit this line in the validate
                 const head = `${answers.type + scope}: ${answers.subject}`
 
-                // Wrap these lines at options.maxLineWidth characters
-                answers.body = answers.body || answers.breakingBody
-                const body = answers.body ? wrap(answers.body, wrapOptions) : false
+                // Construct body from multiple sources, preserving all user inputs
+                const bodyParts: string[] = []
+
+                // Add main body if provided
+                if (answers.body && answers.body.trim() && answers.body !== '-') {
+                    bodyParts.push(answers.body.trim())
+                }
+
+                // Add breakingBody if provided and different from main body
+                if (answers.breakingBody && answers.breakingBody.trim() && answers.breakingBody !== '-' && answers.breakingBody !== answers.body) {
+                    bodyParts.push(answers.breakingBody.trim())
+                }
+
+                // Add issuesBody if provided and different from other bodies
+                if (answers.issuesBody && answers.issuesBody.trim() && answers.issuesBody !== '-'
+                    && !bodyParts.includes(answers.issuesBody.trim())) {
+                    bodyParts.push(answers.issuesBody.trim())
+                }
+
+                const body = bodyParts.length > 0 ? wrap(bodyParts.join('\n\n'), wrapOptions) : false
 
                 // Apply breaking change prefix, removing it if already present
-                let breaking: string = answers.breakingBody || answers.breaking || ''
+                // Use breaking field first, then breakingBody as fallback
+                let breaking: string = answers.breaking || answers.breakingBody || ''
                 breaking = breaking.trim()
+                // Avoid duplicate content in breaking section if it's already in body
+                if (breaking && bodyParts.includes(breaking)) {
+                    breaking = ''
+                }
                 breaking = breaking
-                    ? `BREAKING CHANGE: ${breaking.replace(/^BREAKING CHANGE: /, '')}`
+                    ? `BREAKING CHANGE: ${breaking.replace(/^BREAKING CHANGE: /i, '')}`
                     : ''
                 breaking = breaking ? wrap(breaking, wrapOptions) : ''
 
