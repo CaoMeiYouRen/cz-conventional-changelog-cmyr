@@ -29,8 +29,10 @@ const options = {
 
 try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const commitlintLoad = require('@commitlint/load')
+    const commitlintLoad = require('@commitlint/load')?.default
+    // console.log('commitlintLoad', commitlintLoad)
     commitlintLoad().then((clConfig) => {
+        // console.log(clConfig)
         if (clConfig.rules) {
             const maxHeaderLengthRule = clConfig.rules['header-max-length']
             if (

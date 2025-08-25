@@ -33,16 +33,17 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
+    "@commitlint/load": "^19.8.1",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
     "@types/debug": "^4.1.7",
     "@types/lodash": "^4.14.178",
     "@types/node": "^24.3.0",
+    "commitizen": "^4.2.4",
     "commitlint-config-cmyr": "1.0.0-beta.1",
     "conventional-changelog-cli": "^2.1.1",
     "conventional-changelog-cmyr-config": "^2.1.2",
     "cross-env": "^7.0.3",
-    "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "debug": "^4.3.3",
     "eslint": "^9.34.0",
@@ -84,9 +85,6 @@
     "lodash.map": "^4.6.0",
     "longest": "^2.0.1",
     "word-wrap": "^1.2.5"
-  },
-  "optionalDependencies": {
-    "@commitlint/load": ">6.1.1"
   },
   "peerDependencies": {
     "commitizen": ">=4.0.0"
