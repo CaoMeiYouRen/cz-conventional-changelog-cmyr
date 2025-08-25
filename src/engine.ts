@@ -223,11 +223,12 @@ export default function (options) {
                 const body = answers.body ? wrap(answers.body, wrapOptions) : false
 
                 // Apply breaking change prefix, removing it if already present
-                let breaking = answers.breaking ? answers.breaking.trim() : ''
+                let breaking: string = answers.breakingBody || answers.breaking || ''
+                breaking = breaking.trim()
                 breaking = breaking
                     ? `BREAKING CHANGE: ${breaking.replace(/^BREAKING CHANGE: /, '')}`
                     : ''
-                breaking = breaking ? wrap(breaking, wrapOptions) : false
+                breaking = breaking ? wrap(breaking, wrapOptions) : ''
 
                 const issues = answers.issues ? wrap(answers.issues, wrapOptions) : false
 
