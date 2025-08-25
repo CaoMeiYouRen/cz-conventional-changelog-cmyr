@@ -20,9 +20,6 @@ importers:
       conventional-commit-types:
         specifier: ^3.0.0
         version: 3.0.0
-      lodash.map:
-        specifier: ^4.6.0
-        version: 4.6.0
       longest:
         specifier: ^2.0.1
         version: 2.0.1

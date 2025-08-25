@@ -1,5 +1,4 @@
 import wrap from 'word-wrap'
-import map from 'lodash.map'
 import longest from 'longest'
 import chalk from 'chalk'
 import { lintMarkdown, LintMdRulesConfig } from '@lint-md/core'
@@ -51,7 +50,7 @@ export default function (options, msgConfig) {
     const types = options.types
 
     const length = longest(Object.keys(types)).length + 1
-    const choices = map(types, (type, key) => ({
+    const choices = Object.entries(types).map(([key, type]: [string, any]) => ({
         name: `${`${key}:`.padEnd(length)} ${type.description}`,
         value: key,
     }))
