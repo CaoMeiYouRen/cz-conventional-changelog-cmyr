@@ -1,4 +1,4 @@
-import conventionalCommitTypes from 'conventional-commit-types'
+import conventionalCommitTypes from 'conventional-commit-types' assert { type: 'json' }
 import { configLoader } from 'commitizen'
 import engine from './engine'
 import defaultConfig from './config'
@@ -47,4 +47,4 @@ try {
     //
 }
 
-module.exports = engine(options)
+export default engine(options)
