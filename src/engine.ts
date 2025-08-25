@@ -3,7 +3,6 @@ import map from 'lodash.map'
 import longest from 'longest'
 import chalk from 'chalk'
 import { lintMarkdown, LintMdRulesConfig } from '@lint-md/core'
-import defaultConfig from './config'
 
 const fix = (markdown: string, rules?: LintMdRulesConfig) => lintMarkdown(markdown, rules, true)?.fixedResult?.result
 
@@ -48,7 +47,7 @@ const filterSubject = function (subject, disableSubjectLowerCase) {
 // This can be any kind of SystemJS compatible module.
 // We use Commonjs here, but ES6 or AMD would do just
 // fine.
-export default function (options) {
+export default function (options, msgConfig) {
     const types = options.types
 
     const length = longest(Object.keys(types)).length + 1
@@ -81,14 +80,14 @@ export default function (options) {
                 {
                     type: 'list',
                     name: 'type',
-                    message: defaultConfig.type.description,
+                    message: msgConfig.type.description,
                     choices,
                     default: options.defaultType,
                 },
                 {
                     type: 'input',
                     name: 'scope',
-                    message: defaultConfig.scope.description,
+                    message: msgConfig.scope.description,
                     default: options.defaultScope,
                     filter(value) {
                         return options.disableScopeLowerCase
@@ -101,7 +100,7 @@ export default function (options) {
                     name: 'subject',
                     message(answers) {
                         return (
-                            `${defaultConfig.subject.description} (最多 ${maxSummaryLength(options, answers)
+                            `${msgConfig.subject.description} (最多 ${maxSummaryLength(options, answers)
                             } 个字符):\n`
                         )
                     },
@@ -132,7 +131,7 @@ export default function (options) {
                 {
                     type: 'input',
                     name: 'body',
-                    message: defaultConfig.body.description,
+                    message: msgConfig.body.description,
                     default: options.defaultBody,
                     filter(text) {
                         return lintMd(text)
@@ -141,14 +140,14 @@ export default function (options) {
                 {
                     type: 'confirm',
                     name: 'isBreaking',
-                    message: defaultConfig.isBreaking.description,
+                    message: msgConfig.isBreaking.description,
                     default: false,
                 },
                 {
                     type: 'input',
                     name: 'breakingBody',
                     default: '-',
-                    message: defaultConfig.breakingBody.description,
+                    message: msgConfig.breakingBody.description,
                     when(answers) {
                         return answers.isBreaking && !answers.body
                     },
@@ -165,7 +164,7 @@ export default function (options) {
                 {
                     type: 'input',
                     name: 'breaking',
-                    message: defaultConfig.breaking.description,
+                    message: msgConfig.breaking.description,
                     when(answers) {
                         return answers.isBreaking
                     },
@@ -177,14 +176,14 @@ export default function (options) {
                 {
                     type: 'confirm',
                     name: 'isIssueAffected',
-                    message: defaultConfig.isIssueAffected.description,
+                    message: msgConfig.isIssueAffected.description,
                     default: !!options.defaultIssues,
                 },
                 {
                     type: 'input',
                     name: 'issuesBody',
                     default: '-',
-                    message: defaultConfig.issuesBody.description,
+                    message: msgConfig.issuesBody.description,
                     when(answers) {
                         return (
                             answers.isIssueAffected && !answers.body && !answers.breakingBody
@@ -197,7 +196,7 @@ export default function (options) {
                 {
                     type: 'input',
                     name: 'issues',
-                    message: defaultConfig.issues.description,
+                    message: msgConfig.issues.description,
                     when(answers) {
                         return answers.isIssueAffected
                     },

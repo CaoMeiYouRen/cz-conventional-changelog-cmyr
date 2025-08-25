@@ -1,5 +1,6 @@
 import conventionalCommitTypes from 'conventional-commit-types' assert { type: 'json' }
 import { configLoader } from 'commitizen'
+import commitlintLoad from '@commitlint/load'
 import engine from './engine'
 import defaultConfig from './config'
 
@@ -27,12 +28,13 @@ const options = {
         || 100,
 }
 
+let msgConfig = defaultConfig
+
 try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const commitlintLoad = require('@commitlint/load')?.default
-    // console.log('commitlintLoad', commitlintLoad)
     commitlintLoad().then((clConfig) => {
         // console.log(clConfig)
+        msgConfig = clConfig?.prompt.questions as any || defaultConfig
+
         if (clConfig.rules) {
             const maxHeaderLengthRule = clConfig.rules['header-max-length']
             if (
@@ -49,4 +51,4 @@ try {
     //
 }
 
-export default engine(options)
+export default engine(options, msgConfig)
