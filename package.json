@@ -20,7 +20,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=20.10"
   },
   "scripts": {
     "commit": "git add . && git cz",
