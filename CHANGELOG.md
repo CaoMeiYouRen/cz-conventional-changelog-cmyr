@@ -1,5 +1,12 @@
 # cz-conventional-changelog-cmyr
 
+# [2.0.0-beta.2](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2025-08-26)
+
+
+### ✨ 新功能
+
+* 优化 breaking change 处理逻辑 ([cfffc9d](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/commit/cfffc9d))
+
 # [2.0.0-beta.1](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/compare/v1.1.1...v2.0.0-beta.1) (2025-08-25)
 
 
