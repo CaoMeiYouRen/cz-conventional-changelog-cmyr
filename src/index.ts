@@ -1,4 +1,4 @@
-import conventionalCommitTypes from 'conventional-commit-types' assert { type: 'json' }
+import conventionalCommitTypes from 'conventional-commit-types' with { type: 'json' }
 import { configLoader } from 'commitizen'
 import commitlintLoad from '@commitlint/load'
 import engine from './engine'
