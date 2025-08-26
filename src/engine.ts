@@ -202,6 +202,7 @@ export default function (options, questions) {
                     default: options.defaultIssues ? options.defaultIssues : undefined,
                 },
             ]).then((answers) => {
+                // console.log('answers', answers)
                 const wrapOptions = {
                     trim: true,
                     cut: false,
@@ -225,9 +226,9 @@ export default function (options, questions) {
                 }
 
                 // Add breakingBody if provided and different from main body
-                if (answers.breakingBody && answers.breakingBody.trim() && answers.breakingBody !== '-' && answers.breakingBody !== answers.body) {
-                    bodyParts.push(answers.breakingBody.trim())
-                }
+                // if (answers.breakingBody && answers.breakingBody.trim() && answers.breakingBody !== '-' && answers.breakingBody !== answers.body) {
+                //     bodyParts.push(answers.breakingBody.trim())
+                // }
 
                 // Add issuesBody if provided and different from other bodies
                 if (answers.issuesBody && answers.issuesBody.trim() && answers.issuesBody !== '-'
@@ -239,19 +240,20 @@ export default function (options, questions) {
 
                 // Apply breaking change prefix, removing it if already present
                 // Use breaking field first, then breakingBody as fallback
-                let breaking: string = answers.breaking || answers.breakingBody || ''
-                breaking = breaking.trim()
-                // Avoid duplicate content in breaking section if it's already in body
-                if (breaking && bodyParts.includes(breaking)) {
-                    breaking = ''
+                let breaking: string = ''
+
+                // Check if this is a breaking change based on user input
+                const hasBreakingChange = answers.isBreaking && (answers.breaking?.trim() || answers.breakingBody?.trim())
+
+                if (hasBreakingChange) {
+                    const breakingContent = answers.breaking?.trim() || answers.breakingBody?.trim() || ''
+                    // Always add BREAKING CHANGE prefix when user confirms it's a breaking change
+                    breaking = `BREAKING CHANGE: ${breakingContent.replace(/^BREAKING CHANGE: /i, '')}`
+                    breaking = wrap(breaking, wrapOptions)
                 }
-                breaking = breaking
-                    ? `BREAKING CHANGE: ${breaking.replace(/^BREAKING CHANGE: /i, '')}`
-                    : ''
-                breaking = breaking ? wrap(breaking, wrapOptions) : ''
 
                 const issues = answers.issues ? wrap(answers.issues, wrapOptions) : false
-
+                // console.log(head, body, breaking, issues)
                 commit(filter([head, body, breaking, issues]).join('\n\n'))
             })
         },
