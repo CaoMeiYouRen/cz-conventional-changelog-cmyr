@@ -1,5 +1,17 @@
 # cz-conventional-changelog-cmyr
 
+# [2.0.0-beta.3](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2025-08-26)
+
+
+### ✨ 新功能
+
+* 更新 Node.js 版本要求至 20.10 ([2b85de2](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/commit/2b85de2))
+
+
+### 🐛 Bug 修复
+
+* 修正导入语法以支持新的 JSON 类型声明 ([353ce4d](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/commit/353ce4d))
+
 # [2.0.0-beta.2](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2025-08-26)
 
 
