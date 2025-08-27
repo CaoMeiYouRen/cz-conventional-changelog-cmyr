@@ -2,6 +2,8 @@ import wrap from 'word-wrap'
 import longest from 'longest'
 import chalk from 'chalk'
 import { lintMarkdown, LintMdRulesConfig } from '@lint-md/core'
+import commitlintLoad from '@commitlint/load'
+import defaultConfig from './config'
 
 const fix = (markdown: string, rules?: LintMdRulesConfig) => lintMarkdown(markdown, rules, true)?.fixedResult?.result
 
@@ -43,10 +45,66 @@ const filterSubject = function (subject, disableSubjectLowerCase) {
     return lintMd(subject)
 }
 
+/**
+ * 配置对象接口
+ */
+interface ConfigObject {
+    defaultType?: string
+    defaultScope?: string
+    defaultSubject?: string
+    defaultBody?: string
+    defaultIssues?: string
+    disableScopeLowerCase?: boolean
+    disableSubjectLowerCase?: boolean
+    maxHeaderWidth?: number
+    maxLineWidth?: number
+    // 支持 commitlint 配置结构
+    type?: any
+    scope?: any
+    subject?: any
+    body?: any
+    isBreaking?: any
+    breakingBody?: any
+    breaking?: any
+    isIssueAffected?: any
+    issuesBody?: any
+    issues?: any
+    [key: string]: any // For additional dynamic properties
+}
+/**
+ * 深度合并配置对象
+ * @param target 目标配置对象
+ * @param source 源配置对象
+ * @returns 合并后的配置对象
+ */
+function deepMergeConfig(target: ConfigObject, source: ConfigObject): ConfigObject {
+    if (!source || typeof source !== 'object') {
+        return target
+    }
+
+    const result = { ...target }
+
+    for (const key in source) {
+        const sourceValue = source[key]
+        if (sourceValue !== null && sourceValue !== undefined) {
+            const targetValue = target[key]
+            if (typeof sourceValue === 'object' && !Array.isArray(sourceValue) && targetValue && typeof targetValue === 'object') {
+                // 递归合并对象
+                result[key] = deepMergeConfig(targetValue, sourceValue)
+            } else {
+                // 直接覆盖原始值、数组或 null/undefined
+                result[key] = sourceValue
+            }
+        }
+    }
+
+    return result
+}
+
 // This can be any kind of SystemJS compatible module.
 // We use Commonjs here, but ES6 or AMD would do just
 // fine.
-export default function (options, questions) {
+export default function (options) {
     const types = options.types
 
     const length = longest(Object.keys(types)).length + 1
@@ -67,7 +125,30 @@ export default function (options, questions) {
         //
         // By default, we'll de-indent your commit
         // template and will keep empty lines.
-        prompter(cz, commit) {
+        async prompter(cz, commit) {
+            let questions: ConfigObject = defaultConfig
+            try {
+                const clConfig = await commitlintLoad()
+                // 使用深度合并策略：defaultConfig 作为基础，clConfig.prompt.questions 作为覆盖
+                if (clConfig?.prompt?.questions) {
+                    questions = deepMergeConfig(defaultConfig, clConfig.prompt.questions)
+                } else {
+                    questions = defaultConfig
+                }
+                if (clConfig?.rules) {
+                    const maxHeaderLengthRule = clConfig.rules['header-max-length']
+                    if (
+                        typeof maxHeaderLengthRule === 'object'
+                        && maxHeaderLengthRule.length >= 3
+                        && !process.env.CZ_MAX_HEADER_WIDTH
+                    ) {
+                        options.maxHeaderWidth = maxHeaderLengthRule[2]
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading commitlint config:', error)
+            }
+
             // Let's ask some questions of the user
             // so that we can populate our commit
             // template.
