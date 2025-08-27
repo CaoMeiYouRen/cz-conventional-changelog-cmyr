@@ -36,7 +36,7 @@
     "@types/debug": "^4.1.7",
     "@types/node": "^24.3.0",
     "commitizen": "^4.2.4",
-    "commitlint-config-cmyr": "1.0.0-beta.2",
+    "commitlint-config-cmyr": "1.0.0-beta.3",
     "cross-env": "^7.0.3",
     "debug": "^4.3.3",
     "eslint": "^9.34.0",
