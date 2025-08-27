@@ -3,14 +3,39 @@ import { configLoader } from 'commitizen'
 import commitlintLoad from '@commitlint/load'
 import engine from './engine'
 import defaultConfig from './config'
-
+/**
+ * 配置对象接口
+ */
+interface ConfigObject {
+    defaultType?: string
+    defaultScope?: string
+    defaultSubject?: string
+    defaultBody?: string
+    defaultIssues?: string
+    disableScopeLowerCase?: boolean
+    disableSubjectLowerCase?: boolean
+    maxHeaderWidth?: number
+    maxLineWidth?: number
+    // 支持 commitlint 配置结构
+    type?: any
+    scope?: any
+    subject?: any
+    body?: any
+    isBreaking?: any
+    breakingBody?: any
+    breaking?: any
+    isIssueAffected?: any
+    issuesBody?: any
+    issues?: any
+    [key: string]: any // For additional dynamic properties
+}
 /**
  * 深度合并配置对象
  * @param target 目标配置对象
  * @param source 源配置对象
  * @returns 合并后的配置对象
  */
-function deepMergeConfig(target: any, source: any): any {
+function deepMergeConfig(target: ConfigObject, source: ConfigObject): ConfigObject {
     if (!source || typeof source !== 'object') {
         return target
     }
@@ -58,33 +83,30 @@ const options = {
         || 100,
 }
 
-let questions = defaultConfig
+let questions: ConfigObject = defaultConfig
 
-try {
-    commitlintLoad().then((clConfig) => {
-        // console.log(clConfig)
 
-        // 使用深度合并策略：defaultConfig 作为基础，clConfig.prompt.questions 作为覆盖
-        if (clConfig?.prompt?.questions) {
-            questions = deepMergeConfig(defaultConfig, clConfig.prompt.questions)
-        } else {
-            questions = defaultConfig
+commitlintLoad().then((clConfig) => {
+
+    // 使用深度合并策略：defaultConfig 作为基础，clConfig.prompt.questions 作为覆盖
+    if (clConfig?.prompt?.questions) {
+        questions = deepMergeConfig(defaultConfig, clConfig.prompt.questions)
+    } else {
+        questions = defaultConfig
+    }
+    if (clConfig?.rules) {
+        const maxHeaderLengthRule = clConfig.rules['header-max-length']
+        if (
+            typeof maxHeaderLengthRule === 'object'
+            && maxHeaderLengthRule.length >= 3
+            && !process.env.CZ_MAX_HEADER_WIDTH
+            && !config.maxHeaderWidth
+        ) {
+            options.maxHeaderWidth = maxHeaderLengthRule[2]
         }
-        // console.log(questions)
-        if (clConfig?.rules) {
-            const maxHeaderLengthRule = clConfig.rules['header-max-length']
-            if (
-                typeof maxHeaderLengthRule === 'object'
-                && maxHeaderLengthRule.length >= 3
-                && !process.env.CZ_MAX_HEADER_WIDTH
-                && !config.maxHeaderWidth
-            ) {
-                options.maxHeaderWidth = maxHeaderLengthRule[2]
-            }
-        }
-    })
-} catch (error) {
-    //
-}
+    }
+}).catch((error) => {
+    console.error('Error loading commitlint config:', error)
+})
 
 export default engine(options, questions)
