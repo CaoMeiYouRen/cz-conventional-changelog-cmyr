@@ -51,7 +51,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./dist/index.cjs"
+      "path": "./dist/index.mjs"
     }
   },
   "changelog": {

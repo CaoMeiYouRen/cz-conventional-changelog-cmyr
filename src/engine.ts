@@ -224,8 +224,6 @@ export default function (options, questions) {
                     bodyParts.push(answers.body.trim())
                 }
 
-                // Add breakingBody if provided and different from main body
-
                 // Add issuesBody if provided and different from other bodies
                 if (answers.issuesBody && answers.issuesBody.trim() && answers.issuesBody !== '-'
                     && !bodyParts.includes(answers.issuesBody.trim())) {

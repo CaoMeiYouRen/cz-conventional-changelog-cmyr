@@ -1,8 +1,11 @@
 import conventionalCommitTypes from 'conventional-commit-types' with { type: 'json' }
-import { configLoader } from 'commitizen'
+import * as commitizen from 'commitizen'
 import commitlintLoad from '@commitlint/load'
 import engine from './engine'
 import defaultConfig from './config'
+
+const { configLoader } = commitizen?.default || commitizen
+
 /**
  * 配置对象接口
  */
