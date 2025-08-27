@@ -1,5 +1,19 @@
 # cz-conventional-changelog-cmyr
 
+# [2.0.0-beta.4](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2025-08-27)
+
+
+### 🐛 Bug 修复
+
+* 更新配置路径为 ESM 格式，移除不必要的外部依赖排除 ([a1a5632](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/commit/a1a5632))
+* 添加 @commitlint/types 依赖并优化配置对象类型定义 ([34b226e](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/commit/34b226e))
+
+
+### 📦 代码重构
+
+* 优化配置对象接口，增强类型定义并改进深度合并逻辑 ([2fa38d1](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/commit/2fa38d1))
+* 移除不必要的深度合并逻辑，简化配置加载流程 ([bd099ba](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/commit/bd099ba))
+
 # [2.0.0-beta.3](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2025-08-26)
 
 
