@@ -280,9 +280,9 @@ export default function (options) {
                 }
 
                 // Add issuesBody if provided and different from other bodies
-                if (answers.issuesBody && answers.issuesBody.trim() && answers.issuesBody !== '-'
-                    && !bodyParts.includes(answers.issuesBody.trim())) {
-                    bodyParts.push(answers.issuesBody.trim())
+                const trimmedIssuesBody = answers.issuesBody && answers.issuesBody.trim()
+                if (trimmedIssuesBody && answers.issuesBody !== '-' && !bodyParts.includes(trimmedIssuesBody)) {
+                    bodyParts.push(trimmedIssuesBody)
                 }
 
                 const body = bodyParts.length > 0 ? wrap(bodyParts.join('\n\n'), wrapOptions) : false

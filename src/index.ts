@@ -3,7 +3,11 @@ import * as commitizen from 'commitizen'
 import engine from './engine'
 import defaultConfig from './config'
 
-const { configLoader } = commitizen?.default || commitizen
+const cz = (commitizen && typeof commitizen === 'object' && 'default' in commitizen && commitizen.default)
+    ? commitizen.default
+    : commitizen
+
+const { configLoader } = cz
 
 const config = configLoader.load() || {}
 const options = {
