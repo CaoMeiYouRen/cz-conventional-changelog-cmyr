@@ -1,4 +1,8 @@
-const config = {
+import type { PromptConfig } from '@commitlint/types'
+
+export type Questions = PromptConfig['questions']
+
+const config: Questions = {
     type: {
         description: '请选择您要提交的更改类型',
         enum: {

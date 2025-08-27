@@ -1,9 +1,21 @@
 import wrap from 'word-wrap'
-import map from 'lodash.map'
 import longest from 'longest'
 import chalk from 'chalk'
-import defaultConfig from './config'
 import { lintMarkdown, LintMdRulesConfig } from '@lint-md/core'
+import commitlintLoad from '@commitlint/load'
+import defaultConfig, { Questions } from './config'
+
+// Default placeholder value used to indicate empty/skip input
+const DEFAULT_PLACEHOLDER = '-'
+
+// Type definition for commit type configuration
+interface CommitTypeConfig {
+    description: string
+    title?: string
+    emoji?: string
+}
+
+type CommitTypes = Record<string, CommitTypeConfig>
 
 const fix = (markdown: string, rules?: LintMdRulesConfig) => lintMarkdown(markdown, rules, true)?.fixedResult?.result
 
@@ -45,14 +57,44 @@ const filterSubject = function (subject, disableSubjectLowerCase) {
     return lintMd(subject)
 }
 
+/**
+ * 深度合并配置对象
+ * @param target 目标配置对象
+ * @param source 源配置对象
+ * @returns 合并后的配置对象
+ */
+function deepMergeConfig(target: Questions, source: Questions): Questions {
+    if (!source || typeof source !== 'object') {
+        return target
+    }
+
+    const result = { ...target }
+
+    for (const key in source) {
+        const sourceValue = source[key]
+        if (sourceValue !== null && sourceValue !== undefined) {
+            const targetValue = target[key]
+            if (typeof sourceValue === 'object' && !Array.isArray(sourceValue) && targetValue && typeof targetValue === 'object') {
+                // 递归合并对象
+                result[key] = deepMergeConfig(targetValue, sourceValue)
+            } else {
+                // 直接覆盖原始值、数组或 null/undefined
+                result[key] = sourceValue
+            }
+        }
+    }
+
+    return result
+}
+
 // This can be any kind of SystemJS compatible module.
 // We use Commonjs here, but ES6 or AMD would do just
 // fine.
 export default function (options) {
-    const types = options.types
+    const types: CommitTypes = options.types
 
     const length = longest(Object.keys(types)).length + 1
-    const choices = map(types, (type, key) => ({
+    const choices = Object.entries(types).map(([key, type]: [string, CommitTypeConfig]) => ({
         name: `${`${key}:`.padEnd(length)} ${type.description}`,
         value: key,
     }))
@@ -69,7 +111,30 @@ export default function (options) {
         //
         // By default, we'll de-indent your commit
         // template and will keep empty lines.
-        prompter(cz, commit) {
+        async prompter(cz, commit) {
+            let questions: Questions = defaultConfig
+            try {
+                const clConfig = await commitlintLoad()
+                // 使用深度合并策略：defaultConfig 作为基础，clConfig.prompt.questions 作为覆盖
+                if (clConfig?.prompt?.questions) {
+                    questions = deepMergeConfig(defaultConfig, clConfig.prompt.questions)
+                } else {
+                    questions = defaultConfig
+                }
+                if (clConfig?.rules) {
+                    const maxHeaderLengthRule = clConfig.rules['header-max-length']
+                    if (
+                        typeof maxHeaderLengthRule === 'object'
+                        && maxHeaderLengthRule.length >= 3
+                        && !process.env.CZ_MAX_HEADER_WIDTH
+                    ) {
+                        options.maxHeaderWidth = maxHeaderLengthRule[2]
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading commitlint config:', error)
+            }
+
             // Let's ask some questions of the user
             // so that we can populate our commit
             // template.
@@ -81,14 +146,14 @@ export default function (options) {
                 {
                     type: 'list',
                     name: 'type',
-                    message: defaultConfig.type.description,
+                    message: questions.type.description,
                     choices,
                     default: options.defaultType,
                 },
                 {
                     type: 'input',
                     name: 'scope',
-                    message: defaultConfig.scope.description,
+                    message: questions.scope.description,
                     default: options.defaultScope,
                     filter(value) {
                         return options.disableScopeLowerCase
@@ -101,7 +166,7 @@ export default function (options) {
                     name: 'subject',
                     message(answers) {
                         return (
-                            `${defaultConfig.subject.description} (最多 ${maxSummaryLength(options, answers)
+                            `${questions.subject.description} (最多 ${maxSummaryLength(options, answers)
                             } 个字符):\n`
                         )
                     },
@@ -132,7 +197,7 @@ export default function (options) {
                 {
                     type: 'input',
                     name: 'body',
-                    message: defaultConfig.body.description,
+                    message: questions.body.description,
                     default: options.defaultBody,
                     filter(text) {
                         return lintMd(text)
@@ -141,21 +206,21 @@ export default function (options) {
                 {
                     type: 'confirm',
                     name: 'isBreaking',
-                    message: defaultConfig.isBreaking.description,
+                    message: questions.isBreaking.description,
                     default: false,
                 },
                 {
                     type: 'input',
                     name: 'breakingBody',
-                    default: '-',
-                    message: defaultConfig.breakingBody.description,
+                    default: DEFAULT_PLACEHOLDER,
+                    message: questions.breakingBody.description,
                     when(answers) {
                         return answers.isBreaking && !answers.body
                     },
                     validate(breakingBody) {
                         return (
-                            breakingBody.trim().length > 0 ||
-                            'BREAKING CHANGE 必须要填写 body!'
+                            breakingBody.trim().length > 0
+                            || 'BREAKING CHANGE 必须要填写 body!'
                         )
                     },
                     filter(text) {
@@ -165,7 +230,7 @@ export default function (options) {
                 {
                     type: 'input',
                     name: 'breaking',
-                    message: defaultConfig.breaking.description,
+                    message: questions.breaking.description,
                     when(answers) {
                         return answers.isBreaking
                     },
@@ -177,14 +242,14 @@ export default function (options) {
                 {
                     type: 'confirm',
                     name: 'isIssueAffected',
-                    message: defaultConfig.isIssueAffected.description,
+                    message: questions.isIssueAffected.description,
                     default: !!options.defaultIssues,
                 },
                 {
                     type: 'input',
                     name: 'issuesBody',
-                    default: '-',
-                    message: defaultConfig.issuesBody.description,
+                    default: DEFAULT_PLACEHOLDER,
+                    message: questions.issuesBody.description,
                     when(answers) {
                         return (
                             answers.isIssueAffected && !answers.body && !answers.breakingBody
@@ -197,7 +262,7 @@ export default function (options) {
                 {
                     type: 'input',
                     name: 'issues',
-                    message: defaultConfig.issues.description,
+                    message: questions.issues.description,
                     when(answers) {
                         return answers.isIssueAffected
                     },
@@ -218,19 +283,37 @@ export default function (options) {
                 // Hard limit this line in the validate
                 const head = `${answers.type + scope}: ${answers.subject}`
 
-                // Wrap these lines at options.maxLineWidth characters
-                answers.body = answers.body || answers.breakingBody
-                const body = answers.body ? wrap(answers.body, wrapOptions) : false
+                // Construct body from multiple sources, preserving all user inputs
+                const bodyParts: string[] = []
+
+                // Add main body if provided
+                if (answers.body && answers.body.trim() && answers.body !== DEFAULT_PLACEHOLDER) {
+                    bodyParts.push(answers.body.trim())
+                }
+
+                // Add issuesBody if provided and different from other bodies
+                const trimmedIssuesBody = answers.issuesBody && answers.issuesBody.trim()
+                if (trimmedIssuesBody && answers.issuesBody !== DEFAULT_PLACEHOLDER && !bodyParts.includes(trimmedIssuesBody)) {
+                    bodyParts.push(trimmedIssuesBody)
+                }
+
+                const body = bodyParts.length > 0 ? wrap(bodyParts.join('\n\n'), wrapOptions) : false
 
                 // Apply breaking change prefix, removing it if already present
-                let breaking = answers.breaking ? answers.breaking.trim() : ''
-                breaking = breaking
-                    ? `BREAKING CHANGE: ${breaking.replace(/^BREAKING CHANGE: /, '')}`
-                    : ''
-                breaking = breaking ? wrap(breaking, wrapOptions) : false
+                // Use breaking field first, then breakingBody as fallback
+                let breaking: string = ''
+
+                // Check if this is a breaking change based on user input
+                const hasBreakingChange = answers.isBreaking && (answers.breaking?.trim() || answers.breakingBody?.trim())
+
+                if (hasBreakingChange) {
+                    const breakingContent = answers.breaking?.trim() || answers.breakingBody?.trim() || ''
+                    // Always add BREAKING CHANGE prefix when user confirms it's a breaking change
+                    breaking = `BREAKING CHANGE: ${breakingContent.replace(/^BREAKING CHANGE: /i, '')}`
+                    breaking = wrap(breaking, wrapOptions)
+                }
 
                 const issues = answers.issues ? wrap(answers.issues, wrapOptions) : false
-
                 commit(filter([head, body, breaking, issues]).join('\n\n'))
             })
         },

@@ -1,7 +1,24 @@
+import conventionalCommitTypes from 'conventional-commit-types' with { type: 'json' }
+import * as commitizen from 'commitizen'
 import engine from './engine'
-import conventionalCommitTypes from 'conventional-commit-types'
-import { configLoader } from 'commitizen'
 import defaultConfig from './config'
+
+/**
+ * Returns the correct commitizen export, handling both CommonJS and ES Module formats.
+ * This compatibility layer is needed because depending on the environment or bundler,
+ * commitizen may be imported as a default export (ESM) or as a module.exports (CJS).
+ * This function ensures that the correct export is used regardless of the import style.
+ */
+function getCommitizenCompat(mod: any) {
+    if (mod && typeof mod === 'object' && 'default' in mod && mod.default) {
+        return mod.default
+    }
+    return mod
+}
+
+const cz = getCommitizenCompat(commitizen)
+
+const { configLoader } = cz
 
 const config = configLoader.load() || {}
 const options = {
@@ -16,35 +33,15 @@ const options = {
     disableSubjectLowerCase:
         process.env.DISABLE_SUBJECT_LOWERCASE || config.disableSubjectLowerCase,
     maxHeaderWidth:
-        process.env.CZ_MAX_HEADER_WIDTH &&
-        parseInt(process.env.CZ_MAX_HEADER_WIDTH) ||
-        config.maxHeaderWidth ||
-        100,
+        process.env.CZ_MAX_HEADER_WIDTH
+        && parseInt(process.env.CZ_MAX_HEADER_WIDTH)
+        || config.maxHeaderWidth
+        || 120,
     maxLineWidth:
-        process.env.CZ_MAX_LINE_WIDTH &&
-        parseInt(process.env.CZ_MAX_LINE_WIDTH) ||
-        config.maxLineWidth ||
-        100,
+        process.env.CZ_MAX_LINE_WIDTH
+        && parseInt(process.env.CZ_MAX_LINE_WIDTH)
+        || config.maxLineWidth
+        || 120,
 }
 
-try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const commitlintLoad = require('@commitlint/load')
-    commitlintLoad().then((clConfig) => {
-        if (clConfig.rules) {
-            const maxHeaderLengthRule = clConfig.rules['header-max-length']
-            if (
-                typeof maxHeaderLengthRule === 'object' &&
-                maxHeaderLengthRule.length >= 3 &&
-                !process.env.CZ_MAX_HEADER_WIDTH &&
-                !config.maxHeaderWidth
-            ) {
-                options.maxHeaderWidth = maxHeaderLengthRule[2]
-            }
-        }
-    })
-} catch (error) {
-    //
-}
-
-module.exports = engine(options)
+export default engine(options)
