@@ -3,9 +3,20 @@ import * as commitizen from 'commitizen'
 import engine from './engine'
 import defaultConfig from './config'
 
-const cz = (commitizen && typeof commitizen === 'object' && 'default' in commitizen && commitizen.default)
-    ? commitizen.default
-    : commitizen
+/**
+ * Returns the correct commitizen export, handling both CommonJS and ES Module formats.
+ * This compatibility layer is needed because depending on the environment or bundler,
+ * commitizen may be imported as a default export (ESM) or as a module.exports (CJS).
+ * This function ensures that the correct export is used regardless of the import style.
+ */
+function getCommitizenCompat(mod: any) {
+    if (mod && typeof mod === 'object' && 'default' in mod && mod.default) {
+        return mod.default
+    }
+    return mod
+}
+
+const cz = getCommitizenCompat(commitizen)
 
 const { configLoader } = cz
 

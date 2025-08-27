@@ -5,6 +5,18 @@ import { lintMarkdown, LintMdRulesConfig } from '@lint-md/core'
 import commitlintLoad from '@commitlint/load'
 import defaultConfig, { Questions } from './config'
 
+// Default placeholder value used to indicate empty/skip input
+const DEFAULT_PLACEHOLDER = '-'
+
+// Type definition for commit type configuration
+interface CommitTypeConfig {
+    description: string
+    title?: string
+    emoji?: string
+}
+
+type CommitTypes = Record<string, CommitTypeConfig>
+
 const fix = (markdown: string, rules?: LintMdRulesConfig) => lintMarkdown(markdown, rules, true)?.fixedResult?.result
 
 function lintMd(markdown: string) {
@@ -79,10 +91,10 @@ function deepMergeConfig(target: Questions, source: Questions): Questions {
 // We use Commonjs here, but ES6 or AMD would do just
 // fine.
 export default function (options) {
-    const types = options.types
+    const types: CommitTypes = options.types
 
     const length = longest(Object.keys(types)).length + 1
-    const choices = Object.entries(types).map(([key, type]: [string, any]) => ({
+    const choices = Object.entries(types).map(([key, type]: [string, CommitTypeConfig]) => ({
         name: `${`${key}:`.padEnd(length)} ${type.description}`,
         value: key,
     }))
@@ -200,7 +212,7 @@ export default function (options) {
                 {
                     type: 'input',
                     name: 'breakingBody',
-                    default: '-',
+                    default: DEFAULT_PLACEHOLDER,
                     message: questions.breakingBody.description,
                     when(answers) {
                         return answers.isBreaking && !answers.body
@@ -236,7 +248,7 @@ export default function (options) {
                 {
                     type: 'input',
                     name: 'issuesBody',
-                    default: '-',
+                    default: DEFAULT_PLACEHOLDER,
                     message: questions.issuesBody.description,
                     when(answers) {
                         return (
@@ -275,13 +287,13 @@ export default function (options) {
                 const bodyParts: string[] = []
 
                 // Add main body if provided
-                if (answers.body && answers.body.trim() && answers.body !== '-') {
+                if (answers.body && answers.body.trim() && answers.body !== DEFAULT_PLACEHOLDER) {
                     bodyParts.push(answers.body.trim())
                 }
 
                 // Add issuesBody if provided and different from other bodies
                 const trimmedIssuesBody = answers.issuesBody && answers.issuesBody.trim()
-                if (trimmedIssuesBody && answers.issuesBody !== '-' && !bodyParts.includes(trimmedIssuesBody)) {
+                if (trimmedIssuesBody && answers.issuesBody !== DEFAULT_PLACEHOLDER && !bodyParts.includes(trimmedIssuesBody)) {
                     bodyParts.push(trimmedIssuesBody)
                 }
 
