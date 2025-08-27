@@ -3,7 +3,7 @@ import longest from 'longest'
 import chalk from 'chalk'
 import { lintMarkdown, LintMdRulesConfig } from '@lint-md/core'
 import commitlintLoad from '@commitlint/load'
-import defaultConfig from './config'
+import defaultConfig, { Questions } from './config'
 
 const fix = (markdown: string, rules?: LintMdRulesConfig) => lintMarkdown(markdown, rules, true)?.fixedResult?.result
 
@@ -46,38 +46,12 @@ const filterSubject = function (subject, disableSubjectLowerCase) {
 }
 
 /**
- * 配置对象接口
- */
-interface ConfigObject {
-    defaultType?: string
-    defaultScope?: string
-    defaultSubject?: string
-    defaultBody?: string
-    defaultIssues?: string
-    disableScopeLowerCase?: boolean
-    disableSubjectLowerCase?: boolean
-    maxHeaderWidth?: number
-    maxLineWidth?: number
-    // 支持 commitlint 配置结构
-    type?: any
-    scope?: any
-    subject?: any
-    body?: any
-    isBreaking?: any
-    breakingBody?: any
-    breaking?: any
-    isIssueAffected?: any
-    issuesBody?: any
-    issues?: any
-    [key: string]: any // For additional dynamic properties
-}
-/**
  * 深度合并配置对象
  * @param target 目标配置对象
  * @param source 源配置对象
  * @returns 合并后的配置对象
  */
-function deepMergeConfig(target: ConfigObject, source: ConfigObject): ConfigObject {
+function deepMergeConfig(target: Questions, source: Questions): Questions {
     if (!source || typeof source !== 'object') {
         return target
     }
@@ -126,7 +100,7 @@ export default function (options) {
         // By default, we'll de-indent your commit
         // template and will keep empty lines.
         async prompter(cz, commit) {
-            let questions: ConfigObject = defaultConfig
+            let questions: Questions = defaultConfig
             try {
                 const clConfig = await commitlintLoad()
                 // 使用深度合并策略：defaultConfig 作为基础，clConfig.prompt.questions 作为覆盖
