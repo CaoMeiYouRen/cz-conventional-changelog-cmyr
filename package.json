@@ -1,6 +1,6 @@
 {
   "name": "cz-conventional-changelog-cmyr",
-  "version": "2.0.0-beta.4",
+  "version": "2.0.0",
   "description": "草梅友仁自定义的 commitizen 配置",
   "author": "CaoMeiYouRen",
   "private": false,
