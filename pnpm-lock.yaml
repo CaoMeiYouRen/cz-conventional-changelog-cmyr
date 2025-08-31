@@ -43,8 +43,8 @@ importers:
         specifier: ^4.2.4
         version: 4.3.1(@types/node@24.3.0)(typescript@5.9.2)
       commitlint-config-cmyr:
-        specifier: 1.0.0-beta.3
-        version: 1.0.0-beta.3
+        specifier: 1.0.0
+        version: 1.0.0
       cross-env:
         specifier: ^10.0.0
         version: 10.0.0
@@ -878,8 +878,8 @@ packages:
     engines: {node: '>= 12'}
     hasBin: true
 
-  commitlint-config-cmyr@1.0.0-beta.3:
-    resolution: {integrity: sha512-AJv3RZEhdVg6rs93CFo8CBhURkpJktsMWorKj61cNMYJ4TVvVeSOoruOmqe7re8F4a+vPCK5DzeXFWRNliFG2w==}
+  commitlint-config-cmyr@1.0.0:
+    resolution: {integrity: sha512-Tz+D9EUe0qq1/xkkPoSELol8sHF2pf0ziBN5zLSdgqfFG1kBFMYtJmi+UP78ehSBZGn1jrwmk2Qu9pFE8DWgJg==}
     engines: {node: '>=18'}
 
   compare-func@2.0.0:
@@ -4186,7 +4186,7 @@ snapshots:
       - '@types/node'
       - typescript
 
-  commitlint-config-cmyr@1.0.0-beta.3:
+  commitlint-config-cmyr@1.0.0:
     dependencies:
       '@commitlint/config-conventional': 19.8.1
 
