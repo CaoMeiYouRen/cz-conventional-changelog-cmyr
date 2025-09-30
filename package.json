@@ -32,7 +32,7 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
+    "@commitlint/cli": "^20.1.0",
     "@types/debug": "^4.1.7",
     "@types/node": "^24.3.0",
     "commitizen": "^4.2.4",
