@@ -87,5 +87,10 @@
     "commitizen": {
       "optional": false
     }
+  },
+  "pnpm": {
+    "overrides": {
+      "tmp": "^0.2.4"
+    }
   }
 }
