@@ -6,6 +6,7 @@ settings:
 
 overrides:
   tmp: ^0.2.4
+  js-yaml: ^4.1.1
 
 importers:
 
@@ -46,7 +47,7 @@ importers:
         specifier: ^4.2.4
         version: 4.3.1(@types/node@24.10.0)(typescript@5.9.3)
       commitlint-config-cmyr:
-        specifier: 1.0.0
+        specifier: ^1.0.0
         version: 1.0.0
       cross-env:
         specifier: ^10.0.0
@@ -58,7 +59,7 @@ importers:
         specifier: ^9.39.1
         version: 9.39.1(jiti@2.5.1)
       eslint-config-cmyr:
-        specifier: 2.0.1
+        specifier: ^2.0.1
         version: 2.0.1(@typescript-eslint/parser@8.40.0(eslint@9.39.1(jiti@2.5.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.5.1))(typescript@5.9.3)
       husky:
         specifier: ^9.1.7
@@ -73,7 +74,7 @@ importers:
         specifier: ^25.0.2
         version: 25.0.2(typescript@5.9.3)
       semantic-release-cmyr-config:
-        specifier: 1.0.0
+        specifier: ^1.0.0
         version: 1.0.0(semantic-release@25.0.2(typescript@5.9.3))
       tsdown:
         specifier: ^0.16.2
@@ -214,12 +215,6 @@ packages:
   '@epic-web/invariant@1.0.0':
     resolution: {integrity: sha512-lrTPqgvfFQtR/eY/qkIzp98OGdNJu0m5ji3q/nJI8v3SXkRKEnWiOxMmbvcSoAIzv/cGiuvRy57k4suKQSAdwA==}
 
-  '@eslint-community/eslint-utils@4.7.0':
-    resolution: {integrity: sha512-dyybb3AcajC7uha6CvhdVRJqaKyn7w2YKqKyAN37NKYgZT36w+iRb0Dymmc5qEJ549c/S31cMMSFd75bteCpCw==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    peerDependencies:
-      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
-
   '@eslint-community/eslint-utils@4.9.0':
     resolution: {integrity: sha512-ayVFHdtZ+hsq1t2Dy24wCmGXGe4q9Gu3smhLYALJrr473ZH27MsnSL+LKUlimp4BWJqMDMLmPpx/Q9R3OAlL4g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -244,10 +239,6 @@ packages:
 
   '@eslint/eslintrc@3.3.1':
     resolution: {integrity: sha512-gtF186CXhIl1p4pJNGZw8Yc6RlshoePRvE0X91oPGb3vZ8pM3qOS9W9NGPat9LziaBV7XrJWGylNQXkGcnM3IQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@eslint/js@9.34.0':
-    resolution: {integrity: sha512-EoyvqQnBNsV1CWaEJ559rxXL4c8V92gxirbawSmVUOWXlsRxxQXl6LmCpdUblgxgSkDIqKnhzba2SjRTI/A5Rw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/js@9.39.1':
@@ -1928,8 +1919,8 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  js-yaml@4.1.0:
-    resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
+  js-yaml@4.1.1:
+    resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
     hasBin: true
 
   jsesc@3.1.0:
@@ -3495,7 +3486,7 @@ snapshots:
   '@commitlint/is-ignored@20.0.0':
     dependencies:
       '@commitlint/types': 20.0.0
-      semver: 7.7.2
+      semver: 7.7.3
 
   '@commitlint/lint@20.0.0':
     dependencies:
@@ -3586,11 +3577,6 @@ snapshots:
 
   '@epic-web/invariant@1.0.0': {}
 
-  '@eslint-community/eslint-utils@4.7.0(eslint@9.39.1(jiti@2.5.1))':
-    dependencies:
-      eslint: 9.39.1(jiti@2.5.1)
-      eslint-visitor-keys: 3.4.3
-
   '@eslint-community/eslint-utils@4.9.0(eslint@9.39.1(jiti@2.5.1))':
     dependencies:
       eslint: 9.39.1(jiti@2.5.1)
@@ -3622,13 +3608,11 @@ snapshots:
       globals: 14.0.0
       ignore: 5.3.2
       import-fresh: 3.3.1
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       minimatch: 3.1.2
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
-
-  '@eslint/js@9.34.0': {}
 
   '@eslint/js@9.39.1': {}
 
@@ -3935,7 +3919,7 @@ snapshots:
       read-pkg: 9.0.1
       registry-auth-token: 5.1.0
       semantic-release: 25.0.2(typescript@5.9.3)
-      semver: 7.7.2
+      semver: 7.7.3
       tempy: 3.1.0
 
   '@semantic-release/release-notes-generator@14.1.0(semantic-release@25.0.2(typescript@5.9.3))':
@@ -3960,7 +3944,7 @@ snapshots:
 
   '@stylistic/eslint-plugin@5.2.3(eslint@9.39.1(jiti@2.5.1))':
     dependencies:
-      '@eslint-community/eslint-utils': 4.7.0(eslint@9.39.1(jiti@2.5.1))
+      '@eslint-community/eslint-utils': 4.9.0(eslint@9.39.1(jiti@2.5.1))
       '@typescript-eslint/types': 8.40.0
       eslint: 9.39.1(jiti@2.5.1)
       eslint-visitor-keys: 4.2.1
@@ -4074,7 +4058,7 @@ snapshots:
       fast-glob: 3.3.3
       is-glob: 4.0.3
       minimatch: 9.0.5
-      semver: 7.7.2
+      semver: 7.7.3
       ts-api-utils: 2.1.0(typescript@5.9.3)
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -4082,7 +4066,7 @@ snapshots:
 
   '@typescript-eslint/utils@8.40.0(eslint@9.39.1(jiti@2.5.1))(typescript@5.9.3)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.7.0(eslint@9.39.1(jiti@2.5.1))
+      '@eslint-community/eslint-utils': 4.9.0(eslint@9.39.1(jiti@2.5.1))
       '@typescript-eslint/scope-manager': 8.40.0
       '@typescript-eslint/types': 8.40.0
       '@typescript-eslint/typescript-estree': 8.40.0(typescript@5.9.3)
@@ -4454,7 +4438,7 @@ snapshots:
       conventional-commits-filter: 5.0.0
       handlebars: 4.7.8
       meow: 13.2.0
-      semver: 7.7.2
+      semver: 7.7.3
 
   conventional-commit-types@3.0.0: {}
 
@@ -4486,7 +4470,7 @@ snapshots:
     dependencies:
       env-paths: 2.2.1
       import-fresh: 3.3.1
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       parse-json: 5.2.0
     optionalDependencies:
       typescript: 5.9.3
@@ -4730,7 +4714,7 @@ snapshots:
 
   eslint-config-cmyr@2.0.1(@typescript-eslint/parser@8.40.0(eslint@9.39.1(jiti@2.5.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.5.1))(typescript@5.9.3):
     dependencies:
-      '@eslint/js': 9.34.0
+      '@eslint/js': 9.39.1
       '@stylistic/eslint-plugin': 5.2.3(eslint@9.39.1(jiti@2.5.1))
       eslint: 9.39.1(jiti@2.5.1)
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.40.0(eslint@9.39.1(jiti@2.5.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.5.1))
@@ -5491,7 +5475,7 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
-  js-yaml@4.1.0:
+  js-yaml@4.1.1:
     dependencies:
       argparse: 2.0.1
 
@@ -6052,13 +6036,13 @@ snapshots:
   normalize-package-data@6.0.2:
     dependencies:
       hosted-git-info: 7.0.2
-      semver: 7.7.2
+      semver: 7.7.3
       validate-npm-package-license: 3.0.4
 
   normalize-package-data@8.0.0:
     dependencies:
       hosted-git-info: 9.0.2
-      semver: 7.7.2
+      semver: 7.7.3
       validate-npm-package-license: 3.0.4
 
   normalize-url@8.0.2: {}
@@ -6594,7 +6578,7 @@ snapshots:
 
   semver-diff@5.0.0:
     dependencies:
-      semver: 7.7.2
+      semver: 7.7.3
 
   semver-regex@4.0.5: {}
 
