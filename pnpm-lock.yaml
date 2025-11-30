@@ -76,7 +76,7 @@ importers:
         version: 25.0.2(typescript@5.9.3)
       semantic-release-cmyr-config:
         specifier: ^1.0.0
-        version: 1.0.0(semantic-release@25.0.2(typescript@5.9.3))
+        version: 1.0.1(semantic-release@25.0.2(typescript@5.9.3))
       tsdown:
         specifier: ^0.16.2
         version: 0.16.8(typescript@5.9.3)
@@ -1449,6 +1449,10 @@ packages:
     resolution: {integrity: sha512-eXvGGwZ5CL17ZSwHWd3bbgk7UUpF6IFHtP57NYYakPvHOs8GDgDe5KJI36jIJzDkJ6eJjuzRA8eBQb6SkKue0g==}
     engines: {node: '>=14.14'}
 
+  fs-extra@11.3.2:
+    resolution: {integrity: sha512-Xr9F6z6up6Ws+NjzMCZc6WXg2YFRlrLP9NQDO3VQrWrfiojdhS56TzueT88ze0uBdCTwEIhQ3ptnmKeWGFAe0A==}
+    engines: {node: '>=14.14'}
+
   fs-extra@9.1.0:
     resolution: {integrity: sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==}
     engines: {node: '>=10'}
@@ -2808,8 +2812,8 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  semantic-release-cmyr-config@1.0.0:
-    resolution: {integrity: sha512-RCZjnZGhDz1xgVw1xsbOMJGKXHaSPZz+DlHKsgz4975fRvkkFjk7zAcappLMZohAWnJref9iQBQqEASHvfr/Sw==}
+  semantic-release-cmyr-config@1.0.1:
+    resolution: {integrity: sha512-0CnBAm8GGPQ0yRFNxaCksCF18YeyvYdLGB1uVCZ2uWsyuWT434jflvtwU+HyCZSah/jH1Urlj6eQDMp0dK6Fig==}
     engines: {node: '>=18'}
     peerDependencies:
       semantic-release: '>=24'
@@ -3829,7 +3833,7 @@ snapshots:
     dependencies:
       '@semantic-release/error': 3.0.0
       aggregate-error: 3.1.0
-      fs-extra: 11.3.1
+      fs-extra: 11.3.2
       lodash: 4.17.21
       semantic-release: 25.0.2(typescript@5.9.3)
 
@@ -4997,6 +5001,12 @@ snapshots:
       readable-stream: 2.3.8
 
   fs-extra@11.3.1:
+    dependencies:
+      graceful-fs: 4.2.11
+      jsonfile: 6.2.0
+      universalify: 2.0.1
+
+  fs-extra@11.3.2:
     dependencies:
       graceful-fs: 4.2.11
       jsonfile: 6.2.0
@@ -6503,7 +6513,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  semantic-release-cmyr-config@1.0.0(semantic-release@25.0.2(typescript@5.9.3)):
+  semantic-release-cmyr-config@1.0.1(semantic-release@25.0.2(typescript@5.9.3)):
     dependencies:
       '@semantic-release/changelog': 6.0.3(semantic-release@25.0.2(typescript@5.9.3))
       '@semantic-release/git': 10.0.1(semantic-release@25.0.2(typescript@5.9.3))
