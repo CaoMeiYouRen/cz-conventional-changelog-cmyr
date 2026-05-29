@@ -13,7 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
+      packages: write
       contents: write
+      issues: write
+      pull-requests: write
+      id-token: write # Required for OIDC
     steps:
       - uses: actions/checkout@v6
         with:
