@@ -1,0 +1,7 @@
+packages:
+  - "."
+
+overrides:
+  tmp: ^0.2.4
+  js-yaml: ^4.1.1
+  glob: ^11.1.0
