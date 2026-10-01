@@ -1,5 +1,13 @@
 # cz-conventional-changelog-cmyr
 
+## [2.0.1](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/compare/v2.0.0...v2.0.1) (2026-10-01)
+
+
+### 🐛 Bug 修复
+
+* **deps:** 修正 glob override 以修复 commitizen 配置加载 ([1a441a7](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/commit/1a441a7))
+* **lint-md:** 适配 @lint-md/core 2.x 规则并锁定版本 ([1350b9b](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/commit/1350b9b))
+
 # [2.0.0](https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/compare/v1.1.1...v2.0.0) (2025-08-27)
 
 
