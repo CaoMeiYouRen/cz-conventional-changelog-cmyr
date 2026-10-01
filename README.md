@@ -9,7 +9,7 @@
   <a href="https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/actions?query=workflow%3ARelease" target="_blank">
     <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/CaoMeiYouRen/cz-conventional-changelog-cmyr/release.yml?branch=master">
   </a>
-  <img src="https://img.shields.io/badge/node-%3E%3D18-blue.svg" />
+  <img src="https://img.shields.io/badge/node-%3E%3D20-blue.svg" />
   <a href="https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr#readme" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
@@ -33,7 +33,7 @@
 
 ## 依赖要求
 
--   node >=18
+-   node >=20
 
 ## 安装
 
@@ -71,6 +71,18 @@ npm run build
 
 ```sh
 npm run lint
+```
+
+## 测试
+
+```sh
+npm run test
+```
+
+## 类型检查
+
+```sh
+npm run typecheck
 ```
 
 ## Commit

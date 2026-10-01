@@ -33,6 +33,8 @@ jobs:
           cache: "pnpm"
       - run: pnpm i --frozen-lockfile
       - run: pnpm run lint
+      - run: pnpm run typecheck
+      - run: pnpm run test
       - run: pnpm run build
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

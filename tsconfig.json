@@ -15,7 +15,7 @@
         "experimentalDecorators": true, //开启装饰器
         "removeComments": false,
         "resolveJsonModule": true,
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "esModuleInterop": true,
         "baseUrl": ".",
         "paths": {

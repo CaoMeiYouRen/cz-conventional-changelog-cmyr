@@ -1,9 +1,9 @@
 import wrap from 'word-wrap'
 import longest from 'longest'
 import chalk from 'chalk'
-import { lintMarkdown, LintMdRulesConfig } from '@lint-md/core'
 import commitlintLoad from '@commitlint/load'
 import defaultConfig, { Questions } from './config'
+import { lintMd } from './lint-md'
 
 // Default placeholder value used to indicate empty/skip input
 const DEFAULT_PLACEHOLDER = '-'
@@ -16,20 +16,6 @@ interface CommitTypeConfig {
 }
 
 type CommitTypes = Record<string, CommitTypeConfig>
-
-const fix = (markdown: string, rules?: LintMdRulesConfig) => lintMarkdown(markdown, rules, true)?.fixedResult?.result
-
-function lintMd(markdown: string) {
-    const rules = {
-        'no-empty-code': 0,
-        'no-trailing-punctuation': 0,
-        'no-long-code': 0,
-        'no-empty-code-lang': 0,
-        'no-empty-inlinecode': 0,
-    } as const
-    const fixed = fix(markdown, rules)
-    return fixed
-}
 
 const filter = function (array) {
     return array.filter((x) => x)
@@ -45,7 +31,7 @@ const maxSummaryLength = function (options, answers) {
     return options.maxHeaderWidth - headerLength(answers)
 }
 
-const filterSubject = function (subject, disableSubjectLowerCase) {
+export const filterSubject = function (subject, disableSubjectLowerCase) {
     subject = subject.trim()
     if (!disableSubjectLowerCase && subject.charAt(0).toLowerCase() !== subject.charAt(0)) {
         subject =
