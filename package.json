@@ -78,7 +78,7 @@
   "dependencies": {
     "@commitlint/load": "^21.2.4",
     "@commitlint/types": "^21.2.3",
-    "@lint-md/core": "2.5.3",
+    "@lint-md/core": "2.6.0",
     "chalk": "^6.0.1",
     "conventional-commit-types": "^3.0.0",
     "longest": "^2.0.1",
