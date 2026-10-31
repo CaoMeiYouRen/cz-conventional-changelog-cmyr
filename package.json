@@ -76,7 +76,7 @@
     "url": "https://github.com/CaoMeiYouRen/cz-conventional-changelog-cmyr/issues"
   },
   "dependencies": {
-    "@commitlint/load": "^20.1.0",
+    "@commitlint/load": "^21.2.4",
     "@commitlint/types": "^21.2.3",
     "@lint-md/core": "2.5.3",
     "chalk": "^6.0.1",
